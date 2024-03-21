@@ -57,7 +57,7 @@ class event_catcher():
             self.event_time_00   = re.compile(r'\d{2}:\d{2}:\d{2}.\d{6}')  # time format: HH:MM:SS.microeconds
 
             self.scanner_events  = ['Calling startSession',                # Start of session / patient registered.
-                                    'Save Series',                         # As named - probably for when a series' parameters and prescription have been saved for scanning.
+                                    # 'Save Series',                         # As named - probably for when a series' parameters and prescription have been saved for scanning. Commented out as causing later events to not show up in list.
                                     ' series UID',                         # Create series UID / new series.
                                     'downloadDone',                        # sequence downloaded into sequencer.
                                     'Sending ready',                       # Scan or Prep scan pressed.
@@ -278,6 +278,11 @@ class event_catcher():
       if (scanner_events_ordered[-1][0] == 'Got scanStopped'):
          print ("Scanner is done acquiring data.")
          scanner_state = "Scanner is done acquiring data."
+
+      if ((scanner_events_ordered[-1][0] == 'Entry gotScanStopped') or
+          (scanner_events_ordered[-1][0] == 'EM_HC_STOP_BUTTON_PRESS')):
+         print ("Stop scan button pressed.")
+         scanner_state = "Scan stopped before completion."
 
       if ((scanner_events_ordered[-1][0] == 'gotImgXfrDone') or
           (scanner_events_ordered[-1][0] == 'Got reconStop') or
