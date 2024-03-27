@@ -275,6 +275,10 @@ class event_catcher():
          print ("Scanner is acquiring data.")
          scanner_state = "Scanner is acquiring data."
 
+      if (scanner_events_ordered[-1][0] == 'exam_path of image'):
+         print ("Image data written to disk/database.")
+         scanner_state = "images being reconstructed and written to scanner disk/database"
+
       if (scanner_events_ordered[-1][0] == 'Got scanStopped'):
          print ("Scanner is done acquiring data.")
          scanner_state = "Scanner is done acquiring data."
