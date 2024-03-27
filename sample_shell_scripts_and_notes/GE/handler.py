@@ -80,7 +80,7 @@ class event_catcher():
             # Initialize dictionary values with nonsensical value, so if an
             # event is not found in the logs, it can still processed by the
             # 'sort_dict' routine.
-            self.scanner_events_dict = dict(zip(self.scanner_events, repeat('AAA AAA 00 0000 (i.e. did not occur)')))
+            self.scanner_events_dict = dict(zip(self.scanner_events, repeat('0000-00-00-00-00-00.000000 (i.e. did not occur)')))
 
 
 
