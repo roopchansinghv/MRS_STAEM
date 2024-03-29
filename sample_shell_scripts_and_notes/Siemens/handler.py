@@ -57,6 +57,7 @@ class event_catcher():
                                                                            #                          dd  == day in month)
 
             self.scanner_events  = ['MSR_OK',
+                                    'SCANNER prepare finished ok',                      # Prescanning / adjustments complete?
                                     'MSR_STARTED',
                                     'MSR_SCANNER_FINISHED',
                                     'MSR_ACQ_FINISHED',
@@ -254,6 +255,14 @@ class event_catcher():
 
       # Otherwise - take a look at the last event in the list to determine the current state
       # of the scanner.
+      if  (scanner_events_ordered[-1][0] == 'SCANNER prepare finished ok'):
+         scanner_state = "Pre-scanning/adjustments completed."
+
+      # Can maybe also include regex for this expression:
+      # MesSerCtrl::smProPrepare: (STATE_PREPARED) preparing protocol 'T1_MPRAGE_FS', sequence '%SiemensSeq%\tfl', MeasUID = 76
+      #
+      # to get name of protocol/scan being run here, and the pulse sequence
+
       if ((scanner_events_ordered[-1][0] == 'MSR_OK') or
           (scanner_events_ordered[-1][0] == 'MSR_STARTED')):
          scanner_state = "Scanner is acquiring data."
