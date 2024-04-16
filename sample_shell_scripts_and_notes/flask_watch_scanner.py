@@ -51,7 +51,8 @@ class _EventHandler():
 
       # Use dictionary to represent scanner info and state with a set of key-value pairs
       return jsonify({"scanner AE Title": self.scanner_name,
-                      "state": self.scanner_event_detector.determine_state_and_actions(scanner_log_events_and_times)})
+                      "scanner_state": self.scanner_event_detector.determine_state_and_actions(scanner_log_events_and_times),
+                      "scanner_last_event_time": scanner_log_events_and_times[-1][1]})
 
 
 
