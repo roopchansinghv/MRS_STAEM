@@ -273,7 +273,7 @@ class event_catcher():
 
       if (scanner_events_ordered[-1][0] == 'Send Image Install Request to TIR'):
          print ("Scanner is acquiring data.")
-         scanner_state = "Scanner is acquiring data."
+         scanner_state = "Scanner is acquiring data"
 
       if (scanner_events_ordered[-1][0] == 'exam_path of image'):
          print ("Image data written to disk/database.")
@@ -281,18 +281,18 @@ class event_catcher():
 
       if (scanner_events_ordered[-1][0] == 'Got scanStopped'):
          print ("Scanner is done acquiring data.")
-         scanner_state = "Scanner is done acquiring data."
+         scanner_state = "Scanner is done acquiring data"
 
       if ((scanner_events_ordered[-1][0] == 'Entry gotScanStopped') or
           (scanner_events_ordered[-1][0] == 'EM_HC_STOP_BUTTON_PRESS')):
          print ("Stop scan button pressed.")
-         scanner_state = "Scan stopped before completion."
+         scanner_state = "Scan stopped before completion"
 
       if ((scanner_events_ordered[-1][0] == 'gotImgXfrDone') or
           (scanner_events_ordered[-1][0] == 'Got reconStop') or
           (scanner_events_ordered[-1][0] == 'updateOnReconDone')):
          print ("Scanner has completed data reconstruction.")
-         scanner_state = "Image reconstruction is done."
+         scanner_state = "Image reconstruction is done"
 
       print ("Last / most recent event in event queue is %s" % scanner_events_ordered[-1][0])
 
