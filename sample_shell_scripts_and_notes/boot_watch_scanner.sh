@@ -1,11 +1,14 @@
 
 #!/bin/sh
 
-export FLASK_APP=./flask_watch_scanner.py
+export FLASK_APP=./watch_scanner_server_flask.py
 export FLASK_ENV=development
 
-# -h 0.0.0.0 runs service on *ALL* network interfaces.
-# Withouth this, the app should just run on 'localhost'
+# flask run -h 0.0.0.0
 
-flask run -h 0.0.0.0
+# -h 0.0.0.0 runs service on *ALL* network interfaces.
+
+flask run
+
+# Withouth this, the app should just run on 'localhost'
 
