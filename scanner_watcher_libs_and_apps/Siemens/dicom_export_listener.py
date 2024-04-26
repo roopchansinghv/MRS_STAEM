@@ -102,7 +102,7 @@ def processOptions (argv):
             # os.system ('touch     ' + FILE)
             # os.system ('chmod 664 ' + FILE)
         except OSError:
-            print 'Cannot find or make PIPE file ' + FILE + ' for communication.'
+            print ('Cannot find or make PIPE file ' + FILE + ' for communication.')
 
 
 
