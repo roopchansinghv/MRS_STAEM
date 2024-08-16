@@ -21,6 +21,8 @@ class event_catcher():
 
 
 
+   read_scanner_info_methods = []
+
    def __init__(self, scanner_vendor='ge', platform_version='dv26.0_r02'):
 
       """
@@ -82,6 +84,7 @@ class event_catcher():
             # 'sort_dict' routine.
             self.scanner_events_dict = dict(zip(self.scanner_events, repeat('0000-00-00-00-00-00.000000 (i.e. did not occur)')))
 
+      self.read_scanner_info_methods = [self.read_header_pool]
 
 
    def sort_dict (self, dictionary_to_sort,
@@ -297,4 +300,17 @@ class event_catcher():
       print ("Last / most recent event in event queue is %s" % scanner_events_ordered[-1][0])
 
       return (scanner_state)
+
+
+
+   def read_header_pool (self):
+
+      """
+         Temporarily empty method to start building up queue of parallel-ly executing events,
+         to be handled concurrently.
+      """
+
+      while 1:
+
+         print ("Should be reading raw header pool eventually, not doing anything else now.")
 
