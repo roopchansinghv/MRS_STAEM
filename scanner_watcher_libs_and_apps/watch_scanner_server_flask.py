@@ -39,6 +39,8 @@ class _EventHandler():
          self.scanner_event_detector = GE.handler.event_catcher()
          self.log_file_read_mode     = 'rb'
 
+
+
    def read_scanner_state(self):
 
       log_lines = self.scanner_event_detector.process_scanner_logs(self.log_file_dir, log_file_read_mode=self.log_file_read_mode)
@@ -60,7 +62,7 @@ class _EventHandler():
 # Default for ReST GET method
 @app.route('/scanner_state')
 
-def get_info_and_state():
+def get_info_and_state(vendor='Siemens', scanner_AET='fmrif3td'):
 
    # reading logging location from environment from account running this.
    try:
@@ -69,7 +71,7 @@ def get_info_and_state():
       print ('\n   !!! Please define the environment variable MRI_SCANNER_LOG_DIR !!!\n')
       sys.exit(1)
 
-   handler = _EventHandler('Siemens', 'fmrif3td', os.environ['MRI_SCANNER_LOG_DIR'])
+   handler = _EventHandler(vendor, scanner_AET, os.environ['MRI_SCANNER_LOG_DIR'])
 
    return handler.read_scanner_state()
 
