@@ -47,14 +47,18 @@ class _EventHandler():
 
       scanner_log_events_and_times = []
       scanner_log_events_and_times = self.scanner_event_detector.sort_dict(self.scanner_event_detector.generate_dict_of_scanner_events(log_lines))
+      event_dict = {} # about actually returns an array (not dictionary - since it is ordered), so create an actually dictionary here, for ease of
+                      # working with JSON
       for event in scanner_log_events_and_times:
 
          print ("Event %36s happened at %s" % (event[0], event[1]))
+         event_dict[event[0]] = event[1]
 
       # Use dictionary to represent scanner info and state with a set of key-value pairs
       return jsonify({"scanner AE Title": self.scanner_name,
                       "scanner_state": self.scanner_event_detector.determine_state_and_actions(scanner_log_events_and_times),
-                      "scanner_last_event_time": scanner_log_events_and_times[-1][1]})
+                      "scanner_last_event_time": scanner_log_events_and_times[-1][1],
+                      "all_events": event_dict})
 
 
 

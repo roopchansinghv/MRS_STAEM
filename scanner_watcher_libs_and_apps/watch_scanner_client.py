@@ -24,7 +24,8 @@ async def poll_scanner_state():
          state = requests.get(scanner_state_src_url)
 
          data = state.json()
-         print(data['scanner AE Title'] + " is in state " + data['scanner_state'] + " and occurred at time: " + data['scanner_last_event_time']) 
+         print(data['scanner AE Title'] + " is in state " + data['scanner_state'] + " and occurred at time: " + data['scanner_last_event_time'])
+         print(data)
 
       except:
 
