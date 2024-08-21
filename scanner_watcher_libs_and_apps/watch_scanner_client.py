@@ -31,17 +31,26 @@ async def poll_state(state_url, polling_interval):
 
          # Convert published JSON struct to Python dictionary
          data = state.json()
-         # print(type(data))
-         # print(data)
+
          # Extract desired information from packet
          current_state_dict = data['all_events']
-         print (str(current_state_dict))
-         print('   \n' + data['scanner AE Title'] + " is in state " + data['scanner_state'] + " and occurred at time: " + data['scanner_last_event_time']
-               + ' detected at ' + current_state_check_date_time + '\n')
+
+         # print('   \n' + data['scanner AE Title'] + " is in state " + data['scanner_state'] + " and occurred at time: " + data['scanner_last_event_time']
+               # + ' detected at ' + current_state_check_date_time + '\n')
 
       except:
 
           print("Couldn't reach URL: %s to determine scanner state." % state_url)
+
+      process_current_state (current_state_dict)
+
+
+
+def process_current_state(state_to_process):
+
+   print ("\n *** Additional code to execute here ***, based on dictionary of state: %s \n" % (str(state_to_process)))
+
+   return
 
 
 
