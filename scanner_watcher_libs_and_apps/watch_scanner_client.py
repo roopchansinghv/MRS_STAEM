@@ -11,13 +11,14 @@ import datetime
 
 state_poll_interval = 1.0   # in seconds
 state_src_url       = 'http://localhost:5000/scanner_state'
-current_state_dict  = {}
 
 
 
 async def poll_state(state_url, polling_interval):
 
    while True:
+
+      current_state_dict  = {}
 
       await asyncio.sleep(polling_interval)
 
