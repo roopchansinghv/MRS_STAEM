@@ -211,13 +211,15 @@ class event_catcher():
 
 
 
-   def determine_state_and_actions (self, scanner_events_ordered):
+   def determine_state_and_actions (self, scanner_events):
 
       """
-         This function will take a list of time-ordered events, i.e.
-         the argument 'scanner_events_ordered', and from that, figure
-         out what the scanner is doing, what state it is in, and what
-         actions this script / library / object can drive.
+         This function will take a list of scanner events, i.e.  the
+         argument 'scanner_events', and translate that into a more
+         'standardized' set of scanner events, with the time of each
+         event, figure out what the scanner is doing, what state it
+         is in, and what actions this script / library / object can
+         drive.
 
          This will, of course, be specific to each scanner platform -
          i.e. linking a message or label to a specific scanner state.
@@ -234,13 +236,15 @@ class event_catcher():
 
       """
 
-      for event_time_pair in scanner_events_ordered:
+      std_event_dict_returned = {}
 
-         if (event_time_pair[0] == 'Patient registered'):
-            patient_time_object_registered   = datetime.datetime.strptime(event_time_pair[1],
+      for event in scanner_events.keys():
+
+         if (event == 'Patient registered'):
+            patient_time_object_registered   = datetime.datetime.strptime(scanner_events[event],
                                                                           '%Y-%m-%d-%H-%M-%S.%f')
-         if (event_time_pair[0] == 'EVENT_PATIENT_DEREGISTERED'):
-            patient_time_object_deregistered = datetime.datetime.strptime(event_time_pair[1],
+         if (event == 'EVENT_PATIENT_DEREGISTERED'):
+            patient_time_object_deregistered = datetime.datetime.strptime(scanner_events[event],
                                                                           '%Y-%m-%d-%H-%M-%S.%f')
 
       # In the Siemens log, the 'Patient registered' message shows up *BOTH* when the patient
@@ -249,28 +253,24 @@ class event_catcher():
       # small delta (here 3 seconds) to determine the separation of the flags, to figure out
       # if a patient has been registered on the console interface or not.
       if ((patient_time_object_registered - patient_time_object_deregistered).total_seconds() < 3):
-         scanner_state = "No patient registered"
+         # scanner_state = 'No patient registered'
+         scanner_state = 'End scanning session'
       else:
-         scanner_state = "Patient registered"
+         # scanner_state = 'Patient registered'
+         scanner_state = 'Start scanning session'
 
-      # Otherwise - take a look at the last event in the list to determine the current state
-      # of the scanner.
-      if  (scanner_events_ordered[-1][0] == 'SCANNER prepare finished ok'):
-         scanner_state = "Pre-scanning/adjustments completed"
+      # Now, iterate through list of events, translate dictionary keys to more
+      # standardized labels, and keep times of each event
+      standardized_scanner_events = {}
+      for event in scanner_events.keys():
+         if (event == 'Patient registered'):
+            standardized_scanner_events[scanner_state] = scanner_events[event]
+         if (event == 'SCANNER prepare finished ok'):
+            standardized_scanner_events['Pulse sequence prepped'] = scanner_events[event]
+         if ((event == 'MSR_OK') or (event == 'MSR_STARTED')):
+            standardized_scanner_events['Scanner is acquiring data'] = scanner_events[event]
+         if ((event == 'MSR_MEAS_FINISHED') or (event == 'MSR_ACQ_FINISHED') or (event == 'MSR_SCANNER_FINISHED')):
+            standardized_scanner_events['Scanner is done acquiring data'] = scanner_events[event]
 
-      # Can maybe also include regex for this expression:
-      # MesSerCtrl::smProPrepare: (STATE_PREPARED) preparing protocol 'T1_MPRAGE_FS', sequence '%SiemensSeq%\tfl', MeasUID = 76
-      #
-      # to get name of protocol/scan being run here, and the pulse sequence
-
-      if ((scanner_events_ordered[-1][0] == 'MSR_OK') or
-          (scanner_events_ordered[-1][0] == 'MSR_STARTED')):
-         scanner_state = "Scanner is acquiring data"
-
-      if ((scanner_events_ordered[-1][0] == 'MSR_MEAS_FINISHED') or
-          (scanner_events_ordered[-1][0] == 'MSR_ACQ_FINISHED') or
-          (scanner_events_ordered[-1][0] == 'MSR_SCANNER_FINISHED')):
-         scanner_state = "Scanner is done acquiring data"
-
-      return (scanner_state)
+      return (standardized_scanner_events)
 
